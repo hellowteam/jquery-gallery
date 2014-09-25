@@ -1,0 +1,51 @@
+{
+    "name": "jquery-gallery",
+    "version": "1.0.0",
+    "description": "jQuery Gallery Source",
+    "author": "xia yanfei",
+    "bugs": {
+        "url": "https://github.com/hellowteam/jquery-gallery/issues"
+    },
+    "engines": {
+        "node" : ">=0.8.0"
+    },
+    "directories": {
+        "lib" : "."
+    },
+    "main": "./index.js",
+    "dependencies": {},
+    "devDependencies": {
+        "grunt": "~0.4.5",
+        "grunt-cli": "~0.1.13",
+
+        "grunt-depconcat": "~0.2.0",
+        "grunt-depcombo": "~0.1.0",
+
+        "grunt-contrib-jshint": "~0.6.0",
+
+        "grunt-contrib-copy": "~0.4.1",
+        "grunt-contrib-less": "~0.6.4",
+        "grunt-contrib-cssmin": "~0.6.0",
+        "grunt-contrib-uglify": "~0.4.0",
+        "grunt-contrib-watch": "~0.4.0",
+        "grunt-contrib-clean": "~0.5.0",
+
+        "grunt-contrib-compress": "0.4.10",
+        "grunt-css-selectors": "~0.1.2"
+    },
+    "scripts": {
+        "postinstall": "grunt build",
+        "test": "grunt test"
+    },
+    "licenses":[
+        {
+            "type" : "MIT",
+            "url" : "https://github.com/hellowteam/jquery-gallery/wiki/LICENSE"
+        }
+    ],
+    "repository": {
+        "type":"git",
+        "url":"https://github.com/hellowteam/jquery-gallery.git"
+    },
+    "keywords": []
+}
