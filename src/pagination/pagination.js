@@ -14,7 +14,7 @@
  *
  */
 
-;(function (win, $, gg) {
+;(function (win, $, JQ) {
 
     "use strict";
 
@@ -232,8 +232,8 @@
     };
     
 
-    gg.pagination = function (selector, config) {
+    JQ.pagination = function (selector, config) {
         return new Pagination(selector, config);
     };
     
-})(window, jQuery, window["gg"] || (window["gg"] = {}));
+})(window, jQuery, window["JQ"] || (window["JQ"] = {}));
