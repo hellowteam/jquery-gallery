@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagination Demo Page</title>
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/initial.css">
+</head>
+<body>
+    <p id="curr-page">当前：</p>
+    <div id="demo-page" class="nav-page"></div>
+    <script src="../assets/lib/jquery-1.10.2.js"></script>
+    <script src="../src/pagination/pagination.js"></script>
+    <script>
+        $(function () {
+            var demoPage = gg.pagination('#demo-page', {
+                currentPage: 1,
+                totalPage: 100,
+                goToPage: true
+            });
+
+            demoPage.onSwitch(function (page) {
+                console.log('当前：'+ page);
+                $('#curr-page').html('当前：'+ page);
+                // do something ...
+            });
+        });
+    // </script>
+</body>
+</html>
