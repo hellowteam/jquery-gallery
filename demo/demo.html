@@ -5,24 +5,115 @@
     <title>Pagination Demo Page</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/initial.css">
+
+    <style type="text/css">
+        /*dialog*/
+        .dialog-popup {
+            display: none;
+            position: fixed;
+            z-index: 90;
+            left: 0; top: 0; right: 0; bottom: 0;
+            
+        }
+        .dialog-popup .dialog-overlay {
+            position: absolute;
+            z-index: -1;
+            left: 0; top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.3);
+            background-color: #000 \9;
+            filter: alpha(opacity = 70) \9;
+        }
+        .dialog-popup .dialog-content {
+            width: 500px;
+            height: 300px;
+            margin: auto;
+            background-color: #fff;
+        }
+
+    </style>
 </head>
 <body>
+    <h3>pagination:</h3>
     <p id="curr-page">当前：</p>
     <div id="demo-page" class="nav-page"></div>
+    <p>&nbsp;</p>
+
+    <h3>dialog:</h3>
+    <p><button id="btn-dialog1" style="position:relative;z-index:2;">弹出浮层</button>，<button id="btn-dialog1-2">我要改下前一个弹层的内容</button></p>
+    <p><button id="btn-dialog2">弹出另外一个浮层</button></p>
+    <p>&nbsp;</p>
+
     <script src="../assets/lib/jquery-1.10.2.js"></script>
     <script src="../src/pagination/pagination.js"></script>
+    <script src="../src/dialog/dialog.js"></script>
     <script>
         $(function () {
+
             var demoPage = JQ.pagination('#demo-page', {
                 currentPage: 1,
                 totalPage: 100,
                 goToPage: true
             });
-
             demoPage.onSwitch(function (page) {
                 console.log('当前：'+ page);
                 $('#curr-page').html('当前：'+ page);
                 // do something ...
+            });
+
+            // dialog ... 
+            var dialog1 = JQ.dialog({
+                    backdrop: true,
+                    buttons: [
+                        {
+                            text: '修改',
+                            clazz: 'btn-modify',
+                            click: function () {}
+                        },
+                        {
+                            text: '取消',
+                            dismiss: true
+                        }
+                    ]
+                });
+
+            /*
+            dialog1.on('click', '.btn-modify', function () {
+                dialog1.set({
+                    buttons: {
+                        "确定": {
+                            clazz: '',
+                            click: doModify// 确定修改
+                        },
+                        "取消": {
+                            click: 'close'
+                        }
+                    }
+                }).show();
+            });
+            */
+
+            $('#btn-dialog1').on('click', function () {
+                console.log('dialog1.show')
+                dialog1.show();
+            });
+
+            $('#btn-dialog1-2').on('click', function () {
+                dialog1.set({
+                    buttons: [
+                        {
+                            text: '确定',
+                            dismiss: true
+                        }
+                    ]
+                }).show();
+            });
+            
+
+            var dialog2 = JQ.dialog({backdrop: 'static'});
+            $('#btn-dialog2').on('click', function () {
+                dialog2.show();
             });
         });
     // </script>
