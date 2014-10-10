@@ -12,7 +12,7 @@
             display: none;
             position: fixed;
             z-index: 90;
-            left: 0; top: 0; right: 0; bottom: 0;
+            left: 200px; top: 0; right: 0; bottom: 0;
             
         }
         .dialog-popup .dialog-overlay {
@@ -29,7 +29,8 @@
             width: 500px;
             height: 300px;
             margin: auto;
-            background-color: #fff;
+            box-shadow: 0 0 1px 0 rgba(0,0,0,.1);
+            background-color: #f3f3f3;
         }
 
     </style>
@@ -72,7 +73,7 @@
                             click: function () {}
                         },
                         {
-                            text: '取消',
+                            text: '取消哈哈哈!!',
                             dismiss: true
                         }
                     ]
@@ -101,13 +102,15 @@
 
             $('#btn-dialog1-2').on('click', function () {
                 dialog1.set({
+                    title: '测试标题~~',
+                    content: '测试内容内容',
                     buttons: [
                         {
-                            text: '确定',
+                            text: '确定吧吧吧吧~~',
                             dismiss: true
                         }
                     ]
-                }).show();
+                });
             });
             
 

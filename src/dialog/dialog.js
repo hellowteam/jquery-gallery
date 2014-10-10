@@ -54,7 +54,7 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
     }
 
     Dialog.prototype.options = {
-        title: 'Title',
+        title: 'dialog title',
         content: 'Hello World!',
         buttons: [
             {
@@ -65,8 +65,8 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
                 dismiss: true
             }
         ],
-        backdrop: true,
-        effect: 'fade'
+        // effect: 'fade', //default
+        backdrop: true
     };
 
     Dialog.prototype._init = function () {
@@ -76,8 +76,8 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
         var tmpl =  '<div class="dialog-popup">';
             tmpl +=     '<div class="dialog-content">';
             tmpl +=         '<div class="dialog-header">';
-            tmpl +=             '<button type="button" class="close"><span>close &times;</span></button>';
-            tmpl +=             '<h4 class="dialog-title">Title</h4>';
+            tmpl +=             '<button type="button" class="close"><span>&times;</span></button>';
+            tmpl +=             '<h4 class="dialog-title"></h4>';
             tmpl +=         '</div>';
             tmpl +=         '<div class="dialog-body"></div>';
             tmpl +=         '<div class="dialog-footer"></div>';
@@ -93,15 +93,26 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
     Dialog.prototype._renderDialog = function () {
         // 
         var config = this.config;
-        var dialog = $(this.dialog);
+        var dialog = this.dialog;
 
         var dialogTitle = dialog.find('.dialog-title'),
             dialogBody = dialog.find('.dialog-body'),
             dialogFooter = dialog.find('.dialog-footer');
 
-        // if (config.title !== undefined && typeof config.title === 'string') {
-        //     tmpl += '<h4 class="dialog-title">'+ config.title +'</h4>';
-        // }
+        // 
+        dialogTitle.html(config.title);
+        dialogBody.html(config.content);
+
+        if (config.buttons === 'none') {
+           dialogFooter.remove();
+        } else {
+            $.each(config.buttons, function (i, item) {
+                // item.text;
+                // item.clazz;
+            });
+        }
+
+        //
     };
 
     Dialog.prototype._bindEvent = function () {
@@ -112,7 +123,7 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
 
             } else if (config.backdrop === true) {
 
-            } else {
+            } else if (config.backdrop === false) {
 
             }
         }
@@ -122,6 +133,7 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
     Dialog.prototype.set = function (config) {
         this.config = $.extend({}, this.config, config);
         this._renderDialog();
+
         return this;
     };
     Dialog.prototype.show = function () {
@@ -134,6 +146,7 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
             this.dialog.fadeIn();
             body.addClass('dialog-open');
         }
+
         return this;
     };
     Dialog.prototype.hide = function () {
@@ -141,6 +154,7 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
             this.dialog.fadeOut();
             body.removeClass('dialog-open');
         }
+
         return this;
     };
     
