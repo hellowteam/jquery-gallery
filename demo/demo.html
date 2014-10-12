@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/initial.css">
 
     <style type="text/css">
+
         /*dialog*/
         .dialog-popup {
             display: none;
@@ -24,14 +25,24 @@
             background-color: rgba(0,0,0,.3);
             background-color: #000 \9;
             filter: alpha(opacity = 70) \9;
-        }
-        .dialog-popup .dialog-content {
+        }        
+        .dialog-popup .dialog-body {
             width: 500px;
-            height: 300px;
-            margin: auto;
+            /*height: 300px;不定高度*/
+            margin: 50px auto;
             box-shadow: 0 0 1px 0 rgba(0,0,0,.1);
             background-color: #f3f3f3;
         }
+        .dialog-popup .dialog-header {}
+        .dialog-popup .close {}
+        .dialog-popup .dialog-title {
+            margin: 0;
+            padding: 0 12px;
+            line-height: 36px;
+            background-color: #EEE;
+            border-bottom: 1px solid #CCC;
+        }
+        .dialog-popup .dialog-content {padding: 20px;}
 
     </style>
 </head>
@@ -65,7 +76,8 @@
 
             // dialog ... 
             var dialog1 = JQ.dialog({
-                    backdrop: true,
+                    title: 'dialog1',
+                    content: 'dialog1内容diadialog1内容log1内容dialog1内容dialog1内容dialog1内容',
                     buttons: [
                         {
                             text: '修改',
@@ -114,7 +126,7 @@
             });
             
 
-            var dialog2 = JQ.dialog({backdrop: 'static'});
+            var dialog2 = JQ.dialog();
             $('#btn-dialog2').on('click', function () {
                 dialog2.show();
             });
