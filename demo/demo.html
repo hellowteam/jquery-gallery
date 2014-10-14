@@ -12,7 +12,8 @@
         .dialog-popup {
             display: none;
             position: fixed;
-            z-index: 90;
+            z-index: 99;
+            outline: none;
             left: 200px; top: 0; right: 0; bottom: 0;
             
         }
@@ -42,7 +43,7 @@
             background-color: #EEE;
             border-bottom: 1px solid #CCC;
         }
-        .dialog-popup .dialog-content {padding: 20px;}
+        .dialog-popup .dialog-content {padding: 12px;}
 
     </style>
 </head>
@@ -64,10 +65,11 @@
         $(function () {
 
             var demoPage = JQ.pagination('#demo-page', {
-                currentPage: 1,
-                totalPage: 100,
-                goToPage: true
-            });
+                    currentPage: 1,
+                    totalPage: 100,
+                    goToPage: true
+                });
+
             demoPage.onSwitch(function (page) {
                 console.log('当前：'+ page);
                 $('#curr-page').html('当前：'+ page);
@@ -78,11 +80,13 @@
             var dialog1 = JQ.dialog({
                     title: 'dialog1',
                     content: 'dialog1内容diadialog1内容log1内容dialog1内容dialog1内容dialog1内容',
+                    onOpen: function () {alert('open...')},
+                    onClose: function () {alert('close...')},
                     buttons: [
                         {
                             text: '修改',
                             clazz: 'btn-modify',
-                            click: function () {}
+                            click: function () {alert(1)}
                         },
                         {
                             text: '取消哈哈哈!!',
@@ -103,19 +107,20 @@
                             click: 'close'
                         }
                     }
-                }).show();
+                }).open();
             });
             */
 
             $('#btn-dialog1').on('click', function () {
                 console.log('dialog1.show')
-                dialog1.show();
+                dialog1.open();
             });
 
             $('#btn-dialog1-2').on('click', function () {
                 dialog1.set({
                     title: '测试标题~~',
                     content: '测试内容内容',
+                    backdrop: false,
                     buttons: [
                         {
                             text: '确定吧吧吧吧~~',
@@ -126,10 +131,17 @@
             });
             
 
-            var dialog2 = JQ.dialog();
-            $('#btn-dialog2').on('click', function () {
-                dialog2.show();
+            var dialog2 = JQ.dialog({escape: false});
+            dialog2.onOpen(function () {
+                alert('dialog2 open ...');
             });
+            dialog2.onClose(function () {
+                alert('dialog2 close ...');
+            });
+            $('#btn-dialog2').on('click', function () {
+                dialog2.open();
+            });
+
         });
     // </script>
 </body>
