@@ -48,6 +48,7 @@
                 }
             ],
             // effect: 'fade', //默认效果为fade
+            // remote: {URL} // TODO: 通过$.load()方法异步加载弹框内容。
             escape: true,
             backdrop: true
         }

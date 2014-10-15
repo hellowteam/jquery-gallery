@@ -40,13 +40,13 @@
             var dialog1 = JQ.dialog({
                     title: 'dialog1',
                     content: 'dialog1内容diadialog1内容log1内容dialog1内容dialog1内容dialog1内容',
-                    onOpen: function () {alert('open...')},
-                    onClose: function () {alert('close...')},
+                    onOpen: function () {console.log('回调事件：open...')},
+                    onClose: function () {console.log('回调事件：close...')},
                     buttons: [
                         {
                             text: '修改',
                             clazz: 'btn-modify',
-                            click: function () {alert(1)}
+                            click: function () {alert('按钮事件')}
                         },
                         {
                             text: '取消哈哈哈!!',
@@ -80,11 +80,11 @@
             });
 
             dialog2.onOpen(function () {
-                alert('dialog2 open ...');
+                console.log('dialog2 open ...');
             });
 
             dialog2.onClose(function () {
-                alert('dialog2 close ...');
+                console.log('dialog2 close ...');
             });
 
             $('#btn-dialog2').on('click', function () {

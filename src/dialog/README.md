@@ -40,7 +40,6 @@ dialog
 * `escape`,     {Boolean} 按Esc关闭弹框
 * `onClose`,    {Function} 关闭弹框回调事件
 * `onOpen`,     {Function} 打开弹框回调事件
-* * `remote`,     {URL} 通过$.load()方法异步加载弹框内容。(TODO)
 
 
 ### 方法
