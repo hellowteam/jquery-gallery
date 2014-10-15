@@ -5,41 +5,6 @@
  * @compatibility: modern browsers and IE>=8
  * @author: xiayanfei
  * @date: 2014-10-01
-
-// new instance and config
-var dialog1 = JQ.dialog({
-    width: 200,
-    title: '',    
-    content: '',
-    clazz: '',
-    onEscape: true,             // 按Esc关闭弹框
-    onClose: function () {},    // 关闭弹框回调事件
-    onOpen: function () {},     // 打开弹框回调事件
-    buttons: [
-        {
-            text: '确定',
-            clazz: 'btn-custom',
-            dismiss: false,
-            callback: function () {}
-        },
-        {
-            text: '取消',
-            dismiss: true
-        }
-    ],
-    // remote: path, // TODO: content will be loaded one time via jQuery's load method and injected into the .content div
-    // effect: fade, // default effect
-    backdrop: 'static' | true | false    
-});
-
-// Method:
-dialog1.set(config);
-dialog1.open();
-dialog1.close();
-
-dialog1.onOpen(fn);
-dialog1.onClose(fn);
-
  *
  */
 
@@ -71,7 +36,7 @@ dialog1.onClose(fn);
     // Dialog默认配置
     $.extend(fn, {
         options: {
-            // title: 'dialog title',
+            // title: 'dialog title',//不设置默认标题
             content: 'Hello World!',
             buttons: [
                 {
@@ -82,7 +47,7 @@ dialog1.onClose(fn);
                     dismiss: true
                 }
             ],
-            // effect: 'fade', //default
+            // effect: 'fade', //默认效果为fade
             escape: true,
             backdrop: true
         }
@@ -90,23 +55,8 @@ dialog1.onClose(fn);
 
     $.extend(fn, {
         _init: function () {
-            // 
             var config = this.config;
-
-            // var tmpl =  '<div class="dialog-popup">';
-            //     tmpl +=     '<div class="dialog-body">';
-            //     tmpl +=         '<div class="dialog-header">';
-            //     tmpl +=             '<button type="button" class="close">&times;</button>';
-            //     tmpl +=             '<h4 class="dialog-title">{{title}}</h4>';
-            //     tmpl +=         '</div>';
-            //     tmpl +=         '<div class="dialog-content">{{content}}</div>';
-            //     tmpl +=         '<div class="dialog-buttons">{{buttons}}</div>';
-            //     tmpl +=     '</div><!-- .dialog-body -->';
-            //     tmpl +=     '<div class="dialog-overlay"></div>';
-            //     tmpl += '</div>';
-
             this._createDialog();
-            // this._bindEvent();
         },
 
         _createDialog: function () {
@@ -146,6 +96,10 @@ dialog1.onClose(fn);
                 dialog[0].className = 'dialog-popup ' + config.clazz;
             }
 
+            if (config.width !== undefined && $.isNumeric(config.width)) {
+                this.dialogBody.css('width', config.width);
+            }
+
             if (config.backdrop !== undefined) {
                 if (config.backdrop === 'static') {
                     this.dialogBackdrop.removeAttr('data-dismiss').off('click.dismiss.dialog');
@@ -169,10 +123,11 @@ dialog1.onClose(fn);
                 self.dialogButtons.html('');
                 // 按配置项渲染按钮
                 $.each(config.buttons, function (i, item) {
+                    var clazz = item.clazz !== undefined ? 'btn ' + item.clazz : 'btn';
                     var props = {
                             "type": "button",
                             "text": item.text,
-                            "class": item.clazz,
+                            "class": clazz,
                             "data-dismiss": item.dismiss
                         };
 
