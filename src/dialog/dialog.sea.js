@@ -31,10 +31,10 @@
         this._init();
     }
 
-    var fn = Dialog.prototype;
+    var _proto_ = Dialog.prototype;
 
     // Dialog默认配置
-    $.extend(fn, {
+    $.extend(_proto_, {
         options: {
             // title: 'dialog title',//不设置默认标题
             content: 'Hello World!',
@@ -54,7 +54,7 @@
         }
     });
 
-    $.extend(fn, {
+    $.extend(_proto_, {
         _init: function () {
             var config = this.config;
             this._createDialog();
