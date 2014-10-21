@@ -248,7 +248,7 @@
             return this;
         },
 
-        // TODO: 
+        // TODO:
         // destroy: function () {}
 
     });
@@ -256,9 +256,17 @@
     JQ.dialog = function (config) {
         return new Dialog(config);
     };
+
+    if (typeof module === 'object' && module && typeof module.exports === 'object') {
+        // Register as a named CMD module
+        module.exports = JQ.dialog;
+
+    } else {
+        // Register as a named AMD module
+        if (typeof define === "function" && define.amd) {
+            define( 'dialog', [], function () { return JQ.dialog; } );
+        }
+    }
+    
     
 })(window, jQuery, window["JQ"] || (window["JQ"] = {}));
-
-define(function (require, exports, module) {
-    module.exports = window["JQ"].dialog;
-});

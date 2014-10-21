@@ -5,32 +5,6 @@
  * @compatibility: modern browsers and IE>=8
  * @author: xiayanfei
  * @date: 2014-10-01
-
-var dialog1 = JQ.dialog({
-    width:,
-    title:,
-    content:,
-    buttons: {
-        "确定": {
-            clazz: 'btn-custom',
-            dismiss: false,
-            callback: function () {}
-        },
-        "取消": {
-            dismiss: true
-        }
-    },
-    // remote: path, // TODO: content will be loaded one time via jQuery's load method and injected into the .content div
-    // effect: fade, // default effect
-    backdrop: 'static' | true | false    
-});
-
-dialog1.set(config);
-dialog1.show();
-dialog1.hide();
-
-dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog" || "hide.dialog" || "hidden.dialog";
-
  *
  */
 
@@ -41,123 +15,243 @@ dialog1.addEvent(eventType, handler); eventType = "show.dialog" || "shown.dialog
     var body = $(win.document.body);
 
     var isEmptyObject = function (obj) {
-        var isPlainObject = $.isPlainObject(obj);
-        if (!isPlainObject) return false;
+            var isPlainObject = $.isPlainObject(obj);
+            if (!isPlainObject) return false;
 
-        return $.isEmptyObject(obj);
-    };
+            return $.isEmptyObject(obj);
+        };
+
+    var keyMap = {
+            "ESCAPE": 27
+        };
 
     function Dialog(config) {
-        this.isShown = false;
+        this.isCreated = false;
         this.config = $.extend({}, Dialog.prototype.options, config);
         this._init();
     }
 
-    Dialog.prototype.options = {
-        title: 'dialog title',
-        content: 'Hello World!',
-        buttons: [
-            {
-                text: '确定'
-            },
-            {
-                text: '取消',
-                dismiss: true
+    var fn = Dialog.prototype;
+
+    // Dialog默认配置
+    $.extend(fn, {
+        options: {
+            // title: 'dialog title',//不设置默认标题
+            content: 'Hello World!',
+            buttons: [
+                {
+                    text: '确定'
+                },
+                {
+                    text: '取消',
+                    dismiss: true
+                }
+            ],
+            // effect: 'fade', //默认效果为fade
+            // remote: {URL} // TODO: 通过$.load()方法异步加载弹框内容。
+            escape: true,
+            backdrop: true
+        }
+    });
+
+    $.extend(fn, {
+        _init: function () {
+            var config = this.config;
+            this._createDialog();
+        },
+
+        _createDialog: function () {
+            // 
+            var self = this;
+            var config = this.config;
+
+            self.dialog = $('<div class="dialog-popup" tabindex="0" />')
+                    .addClass(config.clazz)
+                    .html('<div class="dialog-body"></div>');
+
+            self.dialogBody = self.dialog.find('.dialog-body');
+            self.dialogHeader = $('<div class="dialog-header"/>').appendTo(self.dialogBody);
+            self.dialogBackdrop = $('<div class="dialog-overlay"/>').appendTo(self.dialog);
+
+            self.dialogClose = $('<button type="button" data-dismiss="true" class="close">&times;</button>')
+                    .appendTo(self.dialogHeader);
+
+            if (config.title !== undefined) {
+                self.dialogTitle = $('<h4 class="dialog-title">'+ config.title +'</h4>')
+                        .appendTo(self.dialogHeader);
             }
-        ],
-        // effect: 'fade', //default
-        backdrop: true
-    };
 
-    Dialog.prototype._init = function () {
-        // 
-        var config = this.config;
+            self.dialogContent = $('<div class="dialog-content"/>').appendTo(self.dialogBody);
 
-        var tmpl =  '<div class="dialog-popup">';
-            tmpl +=     '<div class="dialog-content">';
-            tmpl +=         '<div class="dialog-header">';
-            tmpl +=             '<button type="button" class="close"><span>&times;</span></button>';
-            tmpl +=             '<h4 class="dialog-title"></h4>';
-            tmpl +=         '</div>';
-            tmpl +=         '<div class="dialog-body"></div>';
-            tmpl +=         '<div class="dialog-footer"></div>';
-            tmpl +=     '</div><!-- .dialog-content -->';
-            tmpl +=     '<div class="dialog-overlay"></div>';
-            tmpl += '</div>';
+            self.dialogButtons = $('<div class="dialog-buttons"/>').appendTo(self.dialogBody);
+            
+        },
 
-        this.dialog = $(tmpl);
-        this._renderDialog();
-        this._bindEvent();
-    };
+        _renderDialog: function () {
+            // 
+            var self = this;
+            var config = this.config;
+            var dialog = this.dialog;
 
-    Dialog.prototype._renderDialog = function () {
-        // 
-        var config = this.config;
-        var dialog = this.dialog;
+            if (config.clazz !== undefined) {
+                dialog[0].className = 'dialog-popup ' + config.clazz;
+            }
 
-        var dialogTitle = dialog.find('.dialog-title'),
-            dialogBody = dialog.find('.dialog-body'),
-            dialogFooter = dialog.find('.dialog-footer');
+            if (config.width !== undefined && $.isNumeric(config.width)) {
+                this.dialogBody.css('width', config.width);
+            }
 
-        // 
-        dialogTitle.html(config.title);
-        dialogBody.html(config.content);
+            if (config.backdrop !== undefined) {
+                if (config.backdrop === 'static') {
+                    this.dialogBackdrop.removeAttr('data-dismiss').off('click.dismiss.dialog');
 
-        if (config.buttons === 'none') {
-           dialogFooter.remove();
-        } else {
-            $.each(config.buttons, function (i, item) {
-                // item.text;
-                // item.clazz;
+                } else if (config.backdrop === true) {
+                    this.dialogBackdrop.attr('data-dismiss', 'true');
+
+                } else if (config.backdrop === false) {
+                    this.dialogBackdrop.remove();
+                }
+            }
+
+            if (config.title !== undefined) {
+                self.dialogTitle.html(config.title);
+            }
+
+            self.dialogContent.html(config.content);
+
+            if (config.buttons.length > 0) {
+                // 先清空之前设置的按钮
+                self.dialogButtons.html('');
+                // 按配置项渲染按钮
+                $.each(config.buttons, function (i, item) {
+                    var clazz = item.clazz !== undefined ? 'btn ' + item.clazz : 'btn';
+                    var props = {
+                            "type": "button",
+                            "text": item.text,
+                            "class": clazz,
+                            "data-dismiss": item.dismiss
+                        };
+
+                    // 若指定事件，给按钮绑定该事件
+                    if (item.click !== undefined && $.isFunction(item.click)) {
+                        var click = item.click;
+                        props["click"] = function () {
+                            click.apply(this, arguments);
+                        };
+                    }
+
+                    $('<button/>', props).appendTo(self.dialogButtons);
+                });
+            }
+        },
+
+        _bindEvent: function (e) {
+            // 
+            var self = this;
+            var config = this.config;
+
+            this.dialog.on('click.dismiss.dialog', function (e) {
+                var target = $(e.target);
+
+                if (target.attr('data-dismiss') !== undefined) {
+                    self.close();
+                }
             });
-        }
 
-        //
-    };
-
-    Dialog.prototype._bindEvent = function () {
-        // 
-        var config = this.config;
-        if (config.backdrop !== undefined) {
-            if (config.backdrop === 'static') {
-
-            } else if (config.backdrop === true) {
-
-            } else if (config.backdrop === false) {
-
+            // onEscape
+            if (config.escape) {
+                this.dialog.on('keyup.dismiss.dialog', function (e) {
+                    console.log(e.keyCode);
+                    if (e.keyCode === keyMap.ESCAPE) {
+                        self.close();
+                    }
+                });
+            } else {
+                this.dialog.off('keyup.dismiss.dialog');
             }
-        }
-    };
+        },
 
+        onClose: function (fn) {
+            if (fn !== undefined && $.isFunction(fn)) {
+                // fn.apply(this, arguments);
+                this.handlerOnClose = fn;
+            }
+        },
 
-    Dialog.prototype.set = function (config) {
-        this.config = $.extend({}, this.config, config);
-        this._renderDialog();
+        onOpen: function (fn) {
+            if (fn !== undefined && $.isFunction(fn)) {
+                // fn.apply(this, arguments);
+                this.handlerOnOpen = fn;
+            }
+        },
 
-        return this;
-    };
-    Dialog.prototype.show = function () {
-        // 弹层为隐藏状态，显示弹层；已为显示状态，则不作处理
-        if (!body.hasClass('dialog-open')) {
+        set: function (config) {
+            this.config = $.extend({}, this.config, config);
+            this._renderDialog();
+            this.dialog.focus();
 
-            // console.log(body)
+            return this;
+        },
 
-            body.append(this.dialog);
-            this.dialog.fadeIn();
-            body.addClass('dialog-open');
-        }
+        open: function () {
+            var self = this;
+            var config = this.config;
 
-        return this;
-    };
-    Dialog.prototype.hide = function () {
-        if (body.hasClass('dialog-open')) {
-            this.dialog.fadeOut();
-            body.removeClass('dialog-open');
-        }
+            // 弹层为隐藏状态，显示弹层；已为显示状态，则不作处理
+            if (!body.hasClass('dialog-open')) {
 
-        return this;
-    };
-    
+                // 弹层
+                if (!this.isCreated) {
+                    this.isCreated = true;
+                    // 渲染弹框内容
+                    this._renderDialog();
+                    // 页面中插入弹框
+                    this.dialog.appendTo(body);
+                    // 绑定事件
+                    this._bindEvent();
+                }
+
+                body.addClass('dialog-open');
+                this.dialog.fadeIn('normal', function () {
+                    // config.onOpen;
+                    if (config.onOpen !== undefined && $.isFunction(config.onOpen)) {
+                        config.onOpen.apply(this, arguments);
+                    }
+
+                    if (self.handlerOnOpen !== undefined) {
+                        self.handlerOnOpen.apply(this, arguments);
+                    }
+                }).focus();
+            }
+
+            return this;
+        },
+
+        close: function () {
+            var self = this;
+            var config = this.config;
+
+            if (body.hasClass('dialog-open')) {
+                this.dialog.fadeOut('normal', function () {
+                    // config.onClose;
+                    if (config.onClose !== undefined && $.isFunction(config.onClose)) {
+                        config.onClose.apply(this, arguments);
+                    }
+
+                    if (self.handlerOnClose !== undefined) {
+                        self.handlerOnClose.apply(this, arguments);
+                    }
+                });
+                body.removeClass('dialog-open');
+            }
+
+            return this;
+        },
+
+        // TODO:
+        // destroy: function () {}
+
+    });
 
     JQ.dialog = function (config) {
         return new Dialog(config);
