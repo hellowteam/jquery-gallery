@@ -17,10 +17,11 @@
     <p><button id="btn-dialog1" style="position:relative;z-index:2;">弹出浮层</button>，<button id="btn-dialog1-2">我要改下前一个弹层的内容</button></p>
     <p><button id="btn-dialog2">弹出另外一个浮层</button></p>
     <p>&nbsp;</p>
+    <p><button id="btn-dialog-sea">seajs调用弹框组件</button></p>
 
     <script src="../assets/lib/jquery-1.10.2.js"></script>
     <script src="../src/pagination/pagination.js"></script>
-    <script src="../src/dialog/dialog.js"></script>
+    <!-- // <script src="../src/dialog/dialog.js"></script> -->
     <script>
         $(function () {
 
@@ -92,6 +93,33 @@
             });
 
         });
-    // </script>
+    </script>
+
+    <script src="../assets/lib/seajs/sea.js"></script>
+    <script>
+        seajs.use('../src/dialog/dialog.sea', function (dialog) {
+            // var $ = require('jQuery');
+            var aDialog = dialog({
+                title: 'dialog1',
+                content: 'dialog1内容diadialog1内容log1内容dialog1内容dialog1内容dialog1内容',
+                onOpen: function () {console.log('回调事件：open...')},
+                onClose: function () {console.log('回调事件：close...')},
+                buttons: [
+                    {
+                        text: '修改',
+                        clazz: 'btn-modify',
+                        click: function () {alert('按钮事件')}
+                    },
+                    {
+                        text: '取消哈哈哈!!',
+                        dismiss: true
+                    }
+                ]
+            });
+            $('#btn-dialog-sea').on('click', function () {
+                aDialog.show();
+            });
+        });
+    </script>
 </body>
 </html>
