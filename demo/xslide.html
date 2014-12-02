@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>xslide Demo</title>
+    <link rel="stylesheet" type="text/css" href="../assets/css/initial.css">
+
+    <style type="text/css">
+        /*组件样式定义*/
+        .xslide {width: 100%;} /*适应实际使用的容器宽度*/
+
+        .xslide .xslide-wrap {
+            width: 100%;
+            overflow: hidden;
+        }
+        .xslide .xslide-track {
+            position: relative;
+            float: left;
+        }
+
+        /*实例样式定义*/
+        .hi-slide {
+            position: relative;
+            width: 880px;
+            padding: 15px;
+            border: 1px solid #eee;
+        }
+        .hi-slide .xslide-track {
+            height: 130px;
+            overflow: hidden;
+        }
+
+        .hi-slide .xslide-nav {
+            display: table;
+            width: 100%;
+            padding-top: 15px;
+            text-align: center;
+        }
+        .hi-slide .xslide-nav a {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin: 0 6px;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+        .hi-slide .xslide-nav span {display: none;}
+
+        .hi-slide .btn-prev,
+        .hi-slide .btn-next {
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 60px;
+            margin-top: -30px;
+            color: #fff;
+            cursor: pointer;
+            background: rgba(0,0,0,.8);
+        }
+
+        .hi-slide .btn-prev {left: -10px;}
+        .hi-slide .btn-next {right: -10px;}
+        .hi-slide ul {
+            display: inline;
+            float: left;
+        }
+        .hi-slide ul li {
+            display: inline;
+            float: left;
+            width: 130px;
+            height: 130px;
+            margin-right: 20px;
+        }
+        .hi-slide ul img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h3>xslide:</h3>
+
+    <div class="hi-slide">
+
+        <div id="demoSlide" class="xslide">
+            <div class="xslide-wrap">
+                <div class="xslide-track">
+                    <ul data-id="1">
+                        <li class="item"><a href="#"><img src="../assets/pic/94ca.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+
+                        <li class="item"><a href="#"><img src="../assets/pic/94ca.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+
+                    </ul>
+                    <!-- <ul data-id="2">
+                        <li class="item"><a href="#"><img src="../assets/pic/bf09.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                    </ul>
+                    <ul data-id="3">
+                        <li class="item"><a href="#"><img src="../assets/pic/5d60.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                        <li class="item"><a href="#"><img src="../assets/pic/e1fe.jpg" alt="" /></a></li>
+                    </ul> -->
+                </div>
+
+                <div class="xslide-nav">
+                    <a><span>1</span></a>
+                    <a><span>1</span></a>
+                    <a><span>1</span></a>
+                </div>
+
+                <!-- <a class="btn-prev">&lt;</a>
+                <a class="btn-next">&gt;</a> -->
+
+            </div>            
+        </div>
+        
+    </div> <!-- hi-slide -->
+
+    <script src="../assets/lib/jquery/1.11.1/jquery.js"></script>
+    <script src="../assets/lib/seajs/sea.js"></script>
+    <script src="../src/xslide/xslide.js"></script>
+    <script>
+        // 
+        $('#demoSlide').xslide({
+            loop: true,
+            autoPlay: true,
+            interval: 1000,         // ms
+            stepBy: 1,              // [Integrated | 'group']点击翻页，移动n格 or 换一组
+            pauseOnHover: true,     // 鼠标悬停暂停，在[autoPlay:true]时有效
+            pageCtrl: true,         // 显示左右翻页按钮
+            pageNav: false,         // 显示当前指示器
+            callback: function (index) {}
+        });
+
+
+        /*
+        // 用法二：
+        JQ.xslide('#demoSlide', {
+            loop: true,
+            autoPlay: true,
+            interval: 1000,         // ms
+            stepBy: 1,              // [Integrated | 'group']点击翻页，移动n格 or 换一组
+            pauseOnHover: true,     // 鼠标悬停暂停，在[autoPlay:true]时有效
+            pageCtrl: true,         // 显示左右翻页按钮
+            pageNav: false,         // 显示当前指示器
+            callback: function (index) {}
+        });
+        */
+    </script>
+</body>
+</html>
