@@ -19,9 +19,9 @@
     <p>&nbsp;</p>
     <p><button id="btn-dialog-sea">seajs调用弹框组件</button></p>
 
-    <script src="../assets/lib/jquery-1.10.2.js"></script>
+    <script src="../assets/lib/jquery/1.11.1/jquery.min.js"></script>
     <script src="../src/pagination/pagination.js"></script>
-    <!-- // <script src="../src/dialog/dialog.js"></script> -->
+    // <script src="../src/dialog/dialog.js"></script>
     <script>
         $(function () {
 
@@ -95,7 +95,7 @@
         });
     </script>
 
-    <script src="../assets/lib/seajs/sea.js"></script>
+    <script src="../assets/lib/seajs/2.3.0/sea.js"></script>
     <script>
         seajs.use('../src/dialog/dialog.sea', function (dialog) {
             // var $ = require('jQuery');
@@ -117,7 +117,7 @@
                 ]
             });
             $('#btn-dialog-sea').on('click', function () {
-                aDialog.show();
+                aDialog.open();
             });
         });
     </script>
